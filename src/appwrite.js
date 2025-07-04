@@ -11,14 +11,13 @@ const client  = new Client()
 
 const database = new Databases(client);
 
-export const updateSearchCount = async (searchTerm, movie) => {
-  console.log(PROJECT_ID,DATABASE_ID,COLLECTION_ID);
+export const updateMovieSearchCount = async (movie) => {
 
   try {
     const result = await database.listDocuments(
         DATABASE_ID,
         COLLECTION_ID,
-        [Query.equal('searchTerm', searchTerm)]
+        [Query.equal('movie_id', movie.id)]
     )
 
     if(result.documents.length > 0) {
@@ -37,7 +36,7 @@ export const updateSearchCount = async (searchTerm, movie) => {
         DATABASE_ID,
         COLLECTION_ID,
         ID.unique(),
-        {searchTerm, count: 1, movie_id: movie.id, poster_url: `https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+        {movie_id: movie.id, count: 1, poster_url: `https://image.tmdb.org/t/p/w500${movie.poster_path}`}
       )
 
     }
