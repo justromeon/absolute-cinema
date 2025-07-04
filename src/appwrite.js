@@ -32,11 +32,15 @@ export const updateMovieSearchCount = async (movie) => {
 
     } else {
 
+      const posterUrl = movie.poster_path 
+        ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` 
+        : '';
+
       await database.createDocument(
         DATABASE_ID,
         COLLECTION_ID,
         ID.unique(),
-        {movie_id: movie.id, count: 1, poster_url: `https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+        {movie_id: movie.id, count: 1, poster_url: posterUrl}
       )
 
     }
