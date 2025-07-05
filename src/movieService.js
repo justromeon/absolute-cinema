@@ -5,7 +5,7 @@ export const updateMovieSeachCount = async (movie) => {
     : '';
 
     try {
-      const response = await fetch('api/searchCount', {
+      const response = await fetch('/api/searchCount', {
         method: 'POST',
         headers: {
             'Content-type': 'application/json'
