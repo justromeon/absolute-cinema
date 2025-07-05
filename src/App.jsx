@@ -3,7 +3,7 @@ import Search from "./components/Search";
 import Spinner from "./components/Spinner";
 import MovieCard from "./components/MovieCard";
 import { useDebounce } from "react-use";
-import { getTrendingMovies, updateMovieSearchCount } from "./appwrite";
+import { getTrendingMovies, updateMovieSeachCount } from "./movieService";
 
 const API_BASE_URL = 'https://api.themoviedb.org/3/';
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
@@ -51,7 +51,7 @@ const App = () => {
       setMovieList(data.results || []);
 
       if(query && data.results.length > 0) {
-        await updateMovieSearchCount(data.results[0]);
+        await updateMovieSeachCount(data.results[0]);
       }
 
     } catch (error) {
@@ -102,7 +102,7 @@ const App = () => {
 
             <ul>
               {trendingMovies.map( (movie, index) =>
-              <li key={movie.$id}>
+              <li key={movie.movie_id}>
                 <p>{index + 1}</p>
                 <img src={movie.poster_url || 'no-movie.png'} alt={movie.title} />
               </li>)}
