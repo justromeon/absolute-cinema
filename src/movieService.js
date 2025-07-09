@@ -1,5 +1,11 @@
 
 export const updateMovieSeachCount = async (movie) => {
+  if (!movie) {
+    throw new Error('movie object is missing.');
+  } else if(!movie.id){
+    throw new Error('id property of movie object is missing.');    
+  }
+
   const posterUrl = movie.poster_path
     ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
     : '';
@@ -20,8 +26,8 @@ export const updateMovieSeachCount = async (movie) => {
       return await response.json();
 
     } catch (error) {
-      console.log(`Error updating movie search count: ${error}`);
-      throw error;
+      console.log(`[movieService (updateMovieSeachCount)] Error updating movie search count for movie_id ${movie.id}:`, error);
+      throw error; // Re-throw error for App.jsx to handle it
     }
 
 }
@@ -37,7 +43,7 @@ export const getTrendingMovies = async () => {
     return await response.json();
 
   } catch (error) {
-    console.error('Error fetching trending movies:', error);
-    throw error;
+    console.error('[movieService (getTrendingMovies)] Error fetching trending movies:', error);
+    throw error; // Re-throw error for App.jsx to handle it
   }
 }
