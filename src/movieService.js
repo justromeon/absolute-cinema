@@ -1,5 +1,5 @@
 
-export const updateMovieSeachCount = async (movie) => {
+export const updateMovieSearchCount = async (movie) => {
   if (!movie) {
     throw new Error('movie object is missing.');
   } else if(!movie.id){
@@ -26,7 +26,7 @@ export const updateMovieSeachCount = async (movie) => {
     return await response.json();
 
   } catch (error) {
-    console.log(`[movieService (updateMovieSeachCount)] Error updating movie search count for movie_id ${movie.id}:`, error);
+    console.error(`[movieService (updateMovieSeachCount)] Error updating movie search count for movie_id ${movie.id}:`, error);
     throw error; // Re-throw error for App.jsx to handle it
   }
 

@@ -3,7 +3,7 @@ import Search from "./components/Search";
 import Spinner from "./components/Spinner";
 import MovieCard from "./components/MovieCard";
 import { useDebounce } from "react-use";
-import { getTrendingMovies, updateMovieSeachCount } from "./movieService";
+import { getTrendingMovies, updateMovieSearchCount } from "./movieService";
 
 const API_BASE_URL = 'https://api.themoviedb.org/3/';
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
@@ -18,12 +18,12 @@ const API_OPTIONS = {
 
 const App = () => {
 
-  const [seachTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [errMsg, setErrMsg] = useState('');
   const [movieList, setMovieList] = useState([]);
   const [trendingMovies, setTrendingMovies] = useState([]);
-  const [isLoading, setIsLoading] = useState('false');
+  const [isLoading, setIsLoading] = useState(false);
 
   const fetchMovies = async (query = '') => {
     setIsLoading(true);
@@ -47,7 +47,7 @@ const App = () => {
       setMovieList(data.results || []);
 
       if(query && data.results.length > 0) {
-        await updateMovieSeachCount(data.results[0]);
+        await updateMovieSearchCount(data.results[0]);
       }
 
     } catch (error) {
@@ -72,7 +72,7 @@ const App = () => {
 
   }
 
-  useDebounce(() => setDebouncedSearch(seachTerm), 500, [seachTerm]);
+  useDebounce(() => setDebouncedSearch(searchTerm), 500, [searchTerm]);
 
   useEffect( () => {
     fetchMovies(debouncedSearch);
@@ -90,7 +90,7 @@ const App = () => {
         <header>
           <img src="./hero.png" alt="Hero Banner" />
           <h1>Your Next Favorite <span className="text-gradient">Movie</span>, Hassle-free</h1>
-          <Search seachTerm={seachTerm} setSearchTerm={setSearchTerm}/>
+          <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
         </header>
 
         {trendingMovies.length > 0 && (
