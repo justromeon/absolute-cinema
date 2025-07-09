@@ -39,15 +39,11 @@ const App = () => {
       const response = await fetch(endpoint,API_OPTIONS);
 
       if(!response.ok) {
-        throw new Error("Error fetching movies");
+        const errorData = await response.json().catch(() => ({}));
+        const statusMessage = errorData.status_message || 'An unknown network error occurred.';
+        throw new Error(`Failed to fetch movies: ${response.status} - ${statusMessage}`);
       }
       const data = await response.json();
-      
-      if(data.Response === 'False') {
-        setErrMsg(data.Error || 'Failed to load movies.');
-        setMovieList([]);
-        return;
-      }
       setMovieList(data.results || []);
 
       if(query && data.results.length > 0) {
@@ -55,8 +51,9 @@ const App = () => {
       }
 
     } catch (error) {
-      console.log(`Error fetching movies: ${error}`);
-      setErrMsg('Failed loading movies. Please try again later.');
+      console.error('[fetchMovies] Error fetching movies:', error);
+      setErrMsg(error.message || 'Failed to load movies. Please try again later.');
+      setMovieList([]);
     } finally {
       setIsLoading(false);
     }
@@ -70,7 +67,7 @@ const App = () => {
       setTrendingMovies(movies);
       
     } catch (error) {
-      console.log(`Error fetching trending movies: ${error}`)
+      console.error('[loadTrendingMovies] Error fetching trending movies:', error)
     }
 
   }
