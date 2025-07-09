@@ -2,12 +2,15 @@ import { sql } from "@vercel/postgres";
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
-    return res.status(405).json({message: 'Method not allowed'});
+    console.warn(`[searchCount API] Method Not Allowed: ${req.method}`);
+    return res.status(405).json({success: false, message: 'Method not allowed'});
   }
+
   const { movie_id, poster_url } = req.body;
 
   if (!movie_id) {
-    return res.status(400).json({message: 'movie_id is required'});
+    console.warn(`[searchCount API] Bad request: movie_id is required`)
+    return res.status(400).json({success: false, message: 'movie_id is required'});
   }
 
   try {
@@ -15,29 +18,32 @@ export default async function handler(req, res) {
       SELECT movie_id, count
       FROM search_counts
       WHERE movie_id = ${movie_id}
-      `;
+    `;
+    
+    const isMovieFound = rows.length > 0;
+    const currentCount = rows[0].count;
 
-    if (rows.length > 0) {
-      const currentCount = rows[0].count;
+    if (isMovieFound) {
       await sql `
         UPDATE search_counts
         SET count = ${currentCount + 1}
         WHERE movie_id = ${movie_id}
       `;
-      return res.status(200).json({message: 'Movie count updated successfully'})
 
-    } else {
-      
+    } else {      
       await sql `
         INSERT INTO search_counts (movie_id, count, poster_url)
         VALUES (${movie_id}, 1, ${poster_url})
       `;
-      return res.status(201).json({message: 'New movie added successfully'});
       
     }
 
+    const statusCode = isMovieFound ? 200 : 201;
+    const resultMessage = isMovieFound ? 'Movie count updated successfully' : 'New movie added successfully';
+    return res.status(statusCode).json({success: true, message: resultMessage});
+
   } catch (error) {
-    console.log(`Error in searchCount API: ${error}`);
+    console.error(`[searchCount API] Database error for movie_id ${movie_id}:`, error);
     return res.status(500).json({message: 'Internal server error'});
   }
 

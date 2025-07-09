@@ -2,6 +2,7 @@
 
   export default async function handler(req, res) {
     if (req.method !== 'GET') {
+      console.warn(`[trending API] Method not allowed: ${req.method}`)
       return res.status(405).json({message: 'Method not allowed'});
     }
 
@@ -15,8 +16,8 @@
       return res.status(200).json(rows);
 
     } catch (error) {
-      console.log(`Error in trending API: ${error}`);
-      return res.status(500).json({message: 'Internal server error'});
+      console.error(`[trending API] Database error fetching trending movies:`, error);
+      return res.status(500).json({success: false, message: 'Internal server error'});
     }
 
   }
