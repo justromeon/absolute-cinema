@@ -1,27 +1,27 @@
-import React from "react";
+import { Movie } from "../types"
 
-const MovieCard = ({ movie: {title, vote_average, poster_path, original_language, release_date} }) => {
+const MovieCard = ({ movie } : {movie: Movie}) => {
   return (
     <div className="movie-card">
 
       <img 
-        src={poster_path ? `https://image.tmdb.org/t/p/w500/${poster_path}` : 'no-movie.png'}
-        alt={title} 
+        src={movie.poster_path ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}` : 'no-movie.png'}
+        alt={movie.title} 
       />
 
       <div className="mt-4">
-        <h3>{title}</h3>
+        <h3>{movie.title}</h3>
 
         <div className="content">
           <div className="rating">
             <img src="star.svg" alt="star icon" />
-            <p>{vote_average ? vote_average.toFixed() : 'No reviews'}</p>
+            <p>{movie.vote_average ? movie.vote_average.toFixed() : 'No reviews'}</p>
 
             <span>•</span>
-            <p className="lang">{original_language}</p>
+            <p className="lang">{movie.original_language}</p>
 
             <span>•</span>
-            <p className="year">{release_date ? release_date.split('-')[0] : 'N/A'}</p>
+            <p className="year">{movie.release_date ? movie.release_date.split('-')[0] : 'N/A'}</p>
           </div>
         </div>
       </div>
@@ -29,4 +29,4 @@ const MovieCard = ({ movie: {title, vote_average, poster_path, original_language
   )
 }
 
-export default MovieCard
+export default MovieCard;

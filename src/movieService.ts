@@ -1,5 +1,6 @@
+import { Movie } from "./types";
 
-export const updateMovieSearchCount = async (movie) => {
+export const updateMovieSearchCount = async (movie: Movie) => {
   if (!movie) {
     throw new Error('movie object is missing.');
   } else if(!movie.id){

@@ -1,12 +1,14 @@
-import React from "react";
+interface SearchProps {
+  searchTerm: string;
+  setSearchTerm: (term: string) => void;
+}
 
-const Search = ({ searchTerm, setSearchTerm }) => {
+const Search = ({ searchTerm, setSearchTerm }: SearchProps) => {
   return (
     <div className="search">
       <div>
         <img src="search.svg" alt="search" />
-
-        <input 
+        <input
           type="text"
           placeholder="Search thousands shows available..."
           value={searchTerm}
@@ -17,4 +19,4 @@ const Search = ({ searchTerm, setSearchTerm }) => {
   )
 }
 
-export default Search
+export default Search;
