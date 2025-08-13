@@ -4,7 +4,7 @@ import Spinner from "./components/Spinner";
 import MovieCard from "./components/MovieCard";
 import { useDebounce } from "react-use";
 import { getTrendingMovies, updateMovieSearchCount } from "./movieService";
-import { Movie, TrendingMovie } from "./types"; // <-- Import the new types
+import { Movie, TrendingMovie } from "./types";
 
 const API_BASE_URL = 'https://api.themoviedb.org/3/';
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
@@ -84,7 +84,7 @@ const App = () => {
       <div className="pattern" />
       <div className="wrapper">
         <header>
-          <img src="./hero.png" alt="Hero Banner" />
+          <img src="./logo.png" alt="Website Logo" />
           <h1>Your Next Favorite <span className="text-gradient">Movie</span>, Hassle-free</h1>
           <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
         </header>
